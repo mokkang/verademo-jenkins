@@ -7,7 +7,7 @@ pipeline {
    stages {
       stage('Build') {
           with { 
-	    docker.image('maven:3.3.3-jdk-8').inside {
+	    maven:3.3.3-jdk-8
 	  steps {
             // Get some code from a GitHub repository
             git 'https://github.com/mokkang/sca-verademo'
@@ -16,7 +16,7 @@ pipeline {
 	 }
       }
     }
-}
+
 	
 
       stage('SCA SC') {
