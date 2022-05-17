@@ -1,9 +1,5 @@
 pipeline {
-    agent ubuntu:latest 
-
-
-
-
+    agent any
     environment {
         VERACODE_APP_NAME = 'sca-verademo'      // App Name in the Veracode Platform
     }
