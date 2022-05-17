@@ -6,8 +6,7 @@ pipeline {
    }
    stages {
       stage('Build') {
-          with { 
-	    maven:3.3.3-jdk-8
+          with('maven:latest') { 
 	  steps {
             // Get some code from a GitHub repository
             git 'https://github.com/mokkang/sca-verademo'
