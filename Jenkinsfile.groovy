@@ -15,12 +15,17 @@ pipeline {
         // only keep the last x build logs and artifacts (for space saving)
         buildDiscarder(logRotator(numToKeepStr: '20', artifactNumToKeepStr: '20'))
     }
-
+    agent {
+      docker {
+        alwaysPull true
+        image 'maven:latest'
+    }
+}
     stages{
 
         stage ('build') {
             steps {
-                withMaven(maven:'maven-3') {
+                withMaven(maven:'latest') {
                     script {
                         dir('app') {
                             sh 'mvn clean package'
