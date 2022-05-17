@@ -28,7 +28,7 @@ jobs:
         java-version: 1.8
     
     - name: Build with Maven
-      run: mvn -B package --file app/pom.xml
+      run: mvn -B packaage ~/app/pom.xml
     
     - name: Download Java Wrapper
       run: |
