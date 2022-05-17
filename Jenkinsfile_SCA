@@ -9,7 +9,7 @@ pipeline {
            
 	  steps {
             // Get some code from a GitHub repository
-            docker pull maven:latest
+            docker 'pull maven:latest'
 	    git 'https://github.com/mokkang/sca-verademo'
             sh 'mvn -ntp package'
             }
