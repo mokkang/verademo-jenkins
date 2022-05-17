@@ -1,4 +1,5 @@
-stages{
+pipeline {
+stages {
   pipeline {
     agent any
     environment {
@@ -60,5 +61,5 @@ stages{
                 }
             }
         }
-    
+    }    
 }
