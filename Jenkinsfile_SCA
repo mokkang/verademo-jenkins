@@ -1,5 +1,8 @@
 pipeline {
-   agent {
+docker.image('maven:3.3.3-jdk-8').inside {
+  git 'https://github.com/mokkang/sca-verademo'
+  sh 'mvn -B clean install'
+}   agent {
       docker {
          image 'maven:3.6.3-openjdk-8'
       }
@@ -8,7 +11,7 @@ pipeline {
       stage('Build') {
          steps {
             // Get some code from a GitHub repository
-            git 'https://github.com/christyson/verademo'
+            git 'https://github.com/mokkang/sca-verademo'
             sh 'mvn -ntp package'
          }
       }
