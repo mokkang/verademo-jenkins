@@ -1,7 +1,31 @@
   yml
-        pipeline {
-        agent any-with-jdk8-maven-curl-unzip
+pipeline {
+    agent any
+    tools {
+        maven 'Maven 3.3.9'
+        jdk 'jdk8'
+    }
+    stages {
+        stage ('Initialize') {
+            steps {
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                '''
+            }
+        }
 
+        stage ('Build') {
+            steps {
+                sh 'mvn -Dmaven.test.failure.ignore=true install' 
+            }
+            post {
+                success {
+                    junit 'target/surefire-reports/**/*.xml' 
+                }
+            }
+        }
+    }
 	stage('Veracode Upload and Scan')
  	{
 	veracode applicationName: '$projectname',createSandbox: true, criticality: 'VeryHigh', debug: true, fileNamePattern: '', replacementPattern: '', sandboxName: '$projectname', scanExcludesPattern: '', scanIncludesPattern: '', scanName: '$timestamp', teams: '', uploadExcludesPattern: '', uploadIncludesPattern: '**/**.war', useIDkey: false, version:'$USAT_VERSION', vid: '$VERACODE_API_ID', vkey: '$VERACODE_API_KEY'
@@ -35,3 +59,4 @@
         }
         }
         }
+}
