@@ -6,13 +6,14 @@ pipeline {
    }
    stages {
       stage('Build') {
-          with('maven:latest') { 
+           
 	  steps {
             // Get some code from a GitHub repository
-            git 'https://github.com/mokkang/sca-verademo'
+            docker pull maven:latest
+	    git 'https://github.com/mokkang/sca-verademo'
             sh 'mvn -ntp package'
             }
-	 }
+	 
       }
     }
 
