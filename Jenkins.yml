@@ -27,9 +27,9 @@ pipeline {
             }
  }
   
-}
+
 }  
-}
+}{
 	stage('Veracode Upload and Scan')
  	{
 	veracode applicationName: '$projectname',createSandbox: true, criticality: 'VeryHigh', debug: true, fileNamePattern: '', replacementPattern: '', sandboxName: '$projectname', scanExcludesPattern: '', scanIncludesPattern: '', scanName: '$timestamp', teams: '', uploadExcludesPattern: '', uploadIncludesPattern: '**/**.war', useIDkey: false, version:'$USAT_VERSION', vid: '$VERACODE_API_ID', vkey: '$VERACODE_API_KEY'
@@ -40,7 +40,7 @@ pipeline {
             - sh 'maven clean install'
           }
         }
-
+}
           stage('Veracode Pipeline Scan') {
           steps {
           - sh `curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip`
