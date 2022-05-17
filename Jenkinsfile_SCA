@@ -16,10 +16,7 @@ pipeline {
 	 
       }
     }
-
-	
-
-      stage('SCA') {
+	 stage('Scan') {
          steps {
             withCredentials([string(credentialsId: 'SRCCLR_API_TOKEN', variable: 'SRCCLR_API_TOKEN')]) {
                sh '''
