@@ -1,5 +1,8 @@
 pipeline {
-    agent any
+    agent ubuntu:latest 
+
+
+
 
     environment {
         VERACODE_APP_NAME = 'sca-verademo'      // App Name in the Veracode Platform
@@ -14,11 +17,6 @@ pipeline {
     options {
         // only keep the last x build logs and artifacts (for space saving)
         buildDiscarder(logRotator(numToKeepStr: '20', artifactNumToKeepStr: '20'))
-    }
-    agent {
-      docker {
-        alwaysPull true
-        image 'maven:latest'
     }
 }
     stages{
