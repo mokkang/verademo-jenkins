@@ -40,7 +40,7 @@ pipeline {
             - sh 'maven clean install'
           }
         }
-}
+
           stage('Veracode Pipeline Scan') {
           steps {
           - sh `curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip`
