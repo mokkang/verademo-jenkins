@@ -148,6 +148,25 @@
 					<debuglevel>lines,vars,source</debuglevel>
 				</configuration>
 			</plugin>
+ <plugin>
+            <groupId>com.srcclr</groupId>
+            <artifactId>srcclr-maven-plugin</artifactId>
+            <version>3.1.21</version>
+            <configuration>
+                <!--- Add configuration details here-->
+                
+<apiToken>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjY5NTMyLCJleHAiOjE2NTI3ODE2MTcsImF1dGhvcml0aWVzIjoiQUdFTlQiLCJqdGkiOiJjM2FhNDYwMC0yZjlkLTQ4ZGYtODAzZC0xYTQ1NDRhMWJjNDUiLCJjbGllbnRfaWQiOiIiLCJzY29wZSI6W119.lmlLUrpeV2kiZvHY3BcaQrkpY3KVSfcv4g5K3Kn8yM9CPx8oOzv0N6Do4NS-XOTgf9HMqjuqenJse-xG2sSw2Ct5xOxR4tuy1PK68fdsiTWpzjMbvS9dmyMiUEI_qtHcSVV_ykYqfypaYkJG-IToFT0MpQoN4ajrMFhPksasdbY</apiToken>
+           </configuration>
+           <executions>
+               <execution>
+                   <id>srcclr-scan</id>
+                   <phase>verify</phase>
+                   <goals>
+                       <goal>scan</goal>
+                   </goals>
+               </execution>
+          </executions>
+        </plugin>
 		</plugins>
 	</build>
 </project>
