@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: build
-        run: maven clean install
+        run: mvn clean install
   baseline:
     runs-on: ubuntu-latest
     steps:
