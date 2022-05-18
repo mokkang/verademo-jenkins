@@ -40,8 +40,6 @@ jobs:
     pull_request:
       # The branches below must be a subset of the branches above
     branches: [ main2 ]
-  #schedule:
-  #  - cron: '34 21 * * 2'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
        # #permissions:
