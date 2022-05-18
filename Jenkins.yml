@@ -1,22 +1,22 @@
-yml
-
-pipeline {
+{
+pipeline ('Maven')    
+    
+    
     agent any
     tools {
         maven 'Maven 3.3.9'
         jdk 'jdk8'
-    }
-    stages {
-        stage ('Initialize') {
+        },
+    stages 
+            stage ('Initialize') 
             steps {
-                sh '''
-                    echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
-                '''
+                echo "PATH = ${{ $PATH }}"
+                echo "M2_HOME = ${ M2_HOME }"
+                
             }
         }
 
-        stage ('Build') {
+            stage ('Build') {
             steps {
                 sh 'mvn -Dmaven.test.failure.ignore=true install' 
             }
@@ -25,24 +25,19 @@ pipeline {
                     junit 'target/surefire-reports/**/*.xml' 
                 }
             }
- }
-  
-
-}  
-}{
-	stage('Veracode Upload and Scan')
+ }  
+	stage ('Veracode Upload and Scan') {
  	{
 	veracode applicationName: '$projectname',createSandbox: true, criticality: 'VeryHigh', debug: true, fileNamePattern: '', replacementPattern: '', sandboxName: '$projectname', scanExcludesPattern: '', scanIncludesPattern: '', scanName: '$timestamp', teams: '', uploadExcludesPattern: '', uploadIncludesPattern: '**/**.war', useIDkey: false, version:'$USAT_VERSION', vid: '$VERACODE_API_ID', vkey: '$VERACODE_API_KEY'
-	}
-        stages {
-          stage('Maven Build') {
-          steps {
-            - sh 'maven clean install'
+	
+    stages {
+        stage ('Maven Build') {
+        steps {
+          - sh 'maven clean install'
           }
         }
-
-          stage('Veracode Pipeline Scan') {
-          steps {
+        stage ('Veracode Pipeline Scan') {
+        steps {
           - sh `curl -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip`
           - sh `unzip pipeline-scan-LATEST.zip pipeline-scan.jar`
           - sh `java -jar pipeline-scan.jar \
@@ -58,10 +53,7 @@ pipeline {
             }
           }
         }
-        post {
-        always {
-        archiveArtifacts artifacts: 'results.json', fingerprint: true
+     
         }
-        }
-        }
-
+          }
+          }
