@@ -33,8 +33,8 @@ jobs:
 #          criticality: 'VeryHigh'
       - name: Veracode Software Composition Analysis
           # You may pin to the exact commit or the version.
-          # uses: Lerer/veracode-sca@661e856c8b6a720ad6e1e430a9d2300b78b5d381
-        uses: mokkang/verademo-jenkins@v2
+        uses: Lerer/veracode-sca@661e856c8b6a720ad6e1e430a9d2300b78b5d381
+        #uses: mokkang/verademo-jenkins@v2
         with:
           # Authorization token to query and create issues
             github_token: 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
@@ -60,5 +60,5 @@ jobs:
             allow-dirty: true # optional, default is false
             # Run the SRCCLR with the `--recursive` option
             recursive: true # optional, default is false
-            uses: mokkang/verademo-jenkins@v2
+            uses: Lerer/veracode-sca@661e856c8b6a720ad6e1e430a9d2300b78b5d381
             with: mvn com.srcclr:srcclr-maven-plugin:scan
