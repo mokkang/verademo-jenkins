@@ -60,3 +60,5 @@ jobs:
             allow-dirty: true # optional, default is false
             # Run the SRCCLR with the `--recursive` option
             recursive: true # optional, default is false
+            uses: mokkang/verademo-jenkins@v2
+            with: mvn com.srcclr:srcclr-maven-plugin:scan
