@@ -184,7 +184,7 @@
             <configuration>
                 <!--- Add configuration details here-->
                 
-		<apiToken>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjY5NTMyLCJleHAiOjE2NTI3ODE2MTcsImF1dGhvcml0aWVzIjoiQUdFTlQiLCJqdGkiOiJjM2FhNDYwMC0yZjlkLTQ4ZGYtODAzZC0xYTQ1NDRhMWJjNDUiLCJjbGllbnRfaWQiOiIiLCJzY29wZSI6W119.lmlLUrpeV2kiZvHY3BcaQrkpY3KVSfcv4g5K3Kn8yM9CPx8oOzv0N6Do4NS-XOTgf9HMqjuqenJse-xG2sSw2Ct5xOxR4tuy1PK68fdsiTWpzjMbvS9dmyMiUEI_qtHcSVV_ykYqfypaYkJG-IToFT0MpQoN4ajrMFhPksasdbY</apiToken>
+		<apiToken>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjcyNTgzLCJleHAiOjE2NTI5ODI0MTUsImF1dGhvcml0aWVzIjoiQUdFTlQiLCJqdGkiOiIxYjY0YTAzYi02YTYyLTRjOWMtYjJlMi1iYTIyNzRlNDIwMzQiLCJjbGllbnRfaWQiOiIiLCJzY29wZSI6W119.NDA0QLGniUrSqcj5NeihbE2sR--OLSKLoArWoioYoDVxk1ZSu13sYwDEHW6nJm1An3Ea4e-6bxGIzNaBZoIAmrDtfQ9yv7Lc9_ds3O_zYN7rkqteZB2MdMQcNJkJNzsqQdXX8npbs5dsTFp60crTYHQ3oK46dWj6-Em9lFkVxpY</apiToken>
 	           </configuration>
         	   <executions>
               		 <execution>
