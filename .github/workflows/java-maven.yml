@@ -39,7 +39,7 @@ jobs:
           # Authorization token to query and create issues
             github_token: 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
           # 
-           # quick: # optional, default is false
+           # quick: # optional, default is false.  
           # Show update advisor
             update_advisor: true # optional, default is false
            # A git URL to work with in case the scan is not for the current repository
