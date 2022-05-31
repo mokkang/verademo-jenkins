@@ -1,35 +1,72 @@
-# For Security Labs we need both the application and DB running within the same container.
-# It's far easier to use the MariaDB base image and install Maven and Tomcat on top than
-# the other way around. We are using Maven to enable re-compilation within the lab.
-#
-#https://hub.docker.com/_/mariadb/
-# This is Ubuntu 20.04 LTS
-FROM mariadb:10.6.2
+#####################x##################################################
+# File: veracode-pipeline.df
+# 
+FROM curlimages/curl as retriever
 
-# Configure MariaDB
-ENV MYSQL_RANDOM_ROOT_PASSWORD=true
-ENV MYSQL_DATABASE=blab
+ARG VERACODE_WRAPPER_VERSION="unknown"
 
-# Copy DB schema for DB initialisation
-COPY db /docker-entrypoint-initdb.d
+ENV WORKDIR=/home/curl_user
+WORKDIR ${WORKDIR}
 
-# Install OpenJDK 8 and Maven
-# Also install the fortune-mod fortune game
-# https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu
-RUN apt-get update \
-    && apt-get -y install openjdk-8-jdk-headless openjdk-8-jre-headless maven fortune-mod iputils-ping \
-    && ln -s /usr/games/fortune /bin/ \
-    && rm -rf /var/lib/apt/lists/*
+# Retrive most recent veracode wrapper api jar file
+RUN curl  https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip --output pipeline.zip
+RUN unzip pipeline.zip
 
-COPY entrypoint.sh /
-RUN chmod +x /entrypoint.sh
+RUN pwd
+RUN ls -la .
 
-WORKDIR /app
-COPY app /app
-COPY maven-settings.xml /usr/share/maven/conf/settings.xml
+#######################################################################
+#FROM store/oracle/serverjre:8 as runtime
+FROM alpine:latest as runtime
 
-# Compile
-RUN mvn clean package && rm -rf target
+# Add Java Runtime Version 8
+RUN apk add openjdk8-jre
 
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["-c"]
+#######################################################################
+ARG VERSION="unknown"
+
+ENV APPROOT="/app" \
+	APP="pipeline-scan.jar" \
+    VERACODE_ANALYSISCENTER_ID="" \
+    VERACODE_ANALYSISCENTER_KEY="" 
+
+# Create application directory
+RUN mkdir ${APPROOT}
+
+# Add AppRoot to the system search path
+ENV PATH=$PATH:${APPROOT}
+RUN echo $PATH
+
+# Copy docker entrypoint script to container
+COPY ./docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod 555 /docker-entrypoint.sh
+
+# Verify copying of docker-entrypoint.sh
+RUN ls -la /
+
+# Copy contents from retriever directory to application directory
+COPY --from=retriever /home/curl_user ${APPROOT}
+
+# Verify content has been moved to APPROOT
+#RUN ls -la ${APPROOT}
+
+# Update Labels
+LABEL maintainer=jmok@veracode.com \
+      base.name="Veracode Pipeline Scanner" \
+      base.version="${VERSION}"
+
+# change owner and permission on application wrapper
+RUN chown root ${APPROOT}/${APP}
+RUN chgrp root ${APPROOT}/${APP}
+RUN chmod 555 ${APPROOT}/${APP}
+
+# Verify configuration
+RUN pwd
+RUN ls -la .
+
+# Verify Java and App Wrapper work
+RUN java -version
+RUN java -jar ${APPROOT}/${APP} -version
+
+ENTRYPOINT ["/docker-entrypoint.sh"] 
+CMD [""]
