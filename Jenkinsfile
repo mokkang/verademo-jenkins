@@ -6,7 +6,7 @@ pipeline {
     agent any
 
     environment {
-        VERACODE_APP_NAME = 'jenkins'      // App Name in the Veracode Platform
+        VERACODE_APP_NAME = 'jenkins-pipeline'      // App Name in the Veracode Platform
     }
 
     // this is optional on Linux, if jenkins does not have access to your locally installed docker
