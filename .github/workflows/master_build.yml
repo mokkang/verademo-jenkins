@@ -2,8 +2,8 @@ name: Veracode Scan Master
 
 on:
   push:
-    branches:
-      - main2
+  #  branches:
+  #    - main
   #schedule:
     # Running scan at 00:00 on Sunday every week
     #- cron: '0 0 * * 0'
