@@ -26,6 +26,7 @@ jobs:
         env:
           SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
         run: |
+         mvn clean install dependency:tree
          curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan --allow-dirty --update-advisor
       - name: GHACtion
         uses: veracode/veracode-sca@v1.0.8
