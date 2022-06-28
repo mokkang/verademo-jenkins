@@ -1,5 +1,4 @@
 name: Veracode SCA Scan
-#
 on: 
   push:
   
