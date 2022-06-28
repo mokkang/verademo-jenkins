@@ -33,7 +33,7 @@ jobs:
             curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan --debug --allow-dirty
         uses: veracode/veracode-sca@v1.09
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GIT_TOKEN }}
           quick: false
           debug: false
           create-issues: true 
