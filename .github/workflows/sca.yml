@@ -29,14 +29,14 @@ jobs:
       - name: Veracode Software Composition Analysis
         env:
           SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          quick: false
+          debug: false
+          create-issues: true 
+          fail-on-cvss: 1
+            
         run: |
          curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan --debug --allow-dirty
-        uses: Lerer/veracode-sca@v1.0.6
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            quick: false
-            debug: false
-            create-issues: true 
-            fail-on-cvss: 1
+        #uses: veracode/veracode-sca@v1.0.9
             #min-cvss-for-issue: 1
   #       path: '**/*.war'
