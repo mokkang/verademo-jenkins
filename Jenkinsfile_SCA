@@ -95,5 +95,4 @@
                     echo "Pipeline scan done (failures ignored, results avialable in $WORKSPACE/results.json)"
             }
         }
-    }
 }
