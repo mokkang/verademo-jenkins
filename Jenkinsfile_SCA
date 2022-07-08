@@ -1,8 +1,9 @@
-pipeline {    
+pipeline {
+stages {
+  pipeline {
     agent any
-
     environment {
-        VERACODE_APP_NAME = 'Verademo'      // App Name in the Veracode Platform
+        VERACODE_APP_NAME = 'sca-verademo'      // App Name in the Veracode Platform
     }
 
     // this is optional on Linux, if jenkins does not have access to your locally installed docker
@@ -15,12 +16,12 @@ pipeline {
         // only keep the last x build logs and artifacts (for space saving)
         buildDiscarder(logRotator(numToKeepStr: '20', artifactNumToKeepStr: '20'))
     }
-
+}
     stages{
 
         stage ('build') {
             steps {
-                withMaven(maven:'maven-3') {
+                withMaven(maven:'latest') {
                     script {
                         dir('app') {
                             sh 'mvn clean package'
@@ -29,7 +30,7 @@ pipeline {
                 }
             }
         }
-	}
+
         stage ('Veracode scan') {
             steps {
                 echo 'Veracode scanning'
@@ -51,13 +52,13 @@ pipeline {
                     withMaven(maven:'maven-3') {
                         script {
                             sh '''
-                                curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan ./app --update-advisor --allow-dirty
+                                export SCAN_DIR="./app"
+                                curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan --update-advisor
                             '''
                             }
                         }
                     }
                 }
             }
+		}
 	}
-	    
-            
