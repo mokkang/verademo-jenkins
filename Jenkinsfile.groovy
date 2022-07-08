@@ -97,7 +97,6 @@ pipeline {
                 }
             }
         }
-    }
     stage ('Veracode pipeline scan') {
             steps {
                 echo 'Veracode Pipeline scanning'
@@ -133,5 +132,6 @@ pipeline {
                         }
                 }
             }
+    }
     }
 }
