@@ -27,7 +27,7 @@ pipeline {
                 withMaven(maven:'maven-3') {
                     script {
                         dir('app') {
-                            sh 'mvn clean package --file app/'
+                            sh 'mvn clean package'
                         }
                     }
                 }
