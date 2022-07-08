@@ -29,7 +29,7 @@ pipeline {
                 }
             }
         }
-
+	}
         stage ('Veracode scan') {
             steps {
                 echo 'Veracode scanning'
@@ -58,7 +58,6 @@ pipeline {
                     }
                 }
             }
-        }
         stage ('Veracode pipeline scan') {
             steps {
                 echo 'Veracode Pipeline scanning'
@@ -92,9 +91,6 @@ pipeline {
                             }
                         }    
                     } 
-
-                    echo "Pipeline scan done (failures ignored, results avialable in $WORKSPACE/results.json)"
+				}
+			   }   echo "Pipeline scan done (failures ignored, results avialable in $WORKSPACE/results.json)"
             }
-        }
-    }   
-}
