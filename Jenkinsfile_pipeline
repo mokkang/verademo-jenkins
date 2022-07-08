@@ -68,7 +68,7 @@ pipeline {
                                         java -jar pipeline-scan.jar --veracode_api_id '${VERACODE_API_ID}' \
                                             --veracode_api_key '${VERACODE_API_KEY}' \
                                             --file app/target/verademo.war --issue_details true -jf Baseline.json --fail_on_severity="Very High, High" \
-                                            --fail_on_cwe="79,80,89" --jf baseline_pipeline.json
+                                            --fail_on_cwe="79,80,89" -jf baseline_pipeline.json
                                         """
                                 }
                                 else {
@@ -78,7 +78,7 @@ pipeline {
                                             java -jar veracode_scanner\\pipeline-scan.jar --veracode_api_id '${VERACODE_API_ID}' \
                                             --veracode_api_key '${VERACODE_API_KEY}' \
                                             --file app/target/verademo.war --issue_details true -jf Baseline.json --fail_on_severity="Very High, High" \
-                                            --fail_on_cwe="79,80,89" --jf baseline_pipeline.json
+                                            --fail_on_cwe="79,80,89" -jf baseline_pipeline.json
                                             """
                                 }
                             } catch (err) {
