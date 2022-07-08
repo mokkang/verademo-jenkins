@@ -34,8 +34,7 @@ pipeline {
 			stage ('Veracode scan') {
 				steps {
 					echo 'Veracode scanning'
-					withCredentials([ usernamePassword ( 
-						credentialsId: 'veracode_login', usernameVariable: 'VERACODE_API_ID', passwordVariable: 'VERACODE_API_KEY') ]) {
+					withCredentials([ usernamePassword (credentialsId: 'veracode_login', usernameVariable: 'VERACODE_API_ID', passwordVariable: 'VERACODE_API_KEY') ]) {
 							// fire-and-forget 
 							veracode applicationName: "${VERACODE_APP_NAME}", uploadIncludesPattern: "app/target/verademo.war", scanName: "${BUILD_TAG}-${env.HOST_OS}", vid: "${VERACODE_API_ID}", vkey: "${VERACODE_API_KEY}"
 	
@@ -48,20 +47,17 @@ pipeline {
 			stage ('Veracode SCA') {
 				steps {
 					echo 'Veracode SCA'
-					withCredentials([ string(credentialsId: 'SCA_Token', variable: 'SRCCLR_API_TOKEN')]) {
+					withCredentials([ string(credentialsId: 'SCA_Token, variable: 'SRCCLR_API_TOKEN')]) {
 						withMaven(maven:'maven-3') {
-							script {
+							script: {
 								sh '''
-									export SCAN_DIR="./app"
-									curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan --update-advisor
-								'''
-								}
+									curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan ./app --update-advisor --allow-dirty
 							}
-						}
-					}
+						
+						}                
+					}            
 				}
-			}
-		}    
+			}	
         stage ('Veracode pipeline scan') {
             steps {
                 echo 'Veracode Pipeline scanning'
@@ -98,3 +94,4 @@ pipeline {
 				}
 			   }   echo "Pipeline scan done (failures ignored, results avialable in $WORKSPACE/results.json)"
 			}
+		}
