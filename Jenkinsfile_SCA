@@ -1,9 +1,14 @@
-pipeline {
     agent any
 
     environment {
-        VERACODE_APP_NAME = 'Verademo-pipeline'      
+        VERACODE_APP_NAME = 'Verademo'      // App Name in the Veracode Platform
     }
+
+    // this is optional on Linux, if jenkins does not have access to your locally installed docker
+    //tools {
+        // these match up with 'Manage Jenkins -> Global Tool Config'
+        //'org.jenkinsci.plugins.docker.commons.tools.DockerTool' 'docker-latest' 
+    //}
 
     options {
         // only keep the last x build logs and artifacts (for space saving)
@@ -11,51 +16,46 @@ pipeline {
     }
 
     stages{
-        stage ('environment verify') {
+
+        stage ('build') {
             steps {
-                script {
-                    if (isUnix() == true) {
-                        sh 'pwd'
-                        sh 'ls -la'
-                        sh 'echo $PATH'
-                    }
-                    else {
-                        bat 'dir'
-                        bat 'echo %PATH%'
+                withMaven(maven:'maven-3') {
+                    script {
+                        dir('app') {
+                            sh 'mvn clean package'
+                        }
                     }
                 }
             }
         }
 
-        stage ('build') {
+        stage ('Veracode scan') {
             steps {
-                // use the Maven plugin
-                withMaven(maven:'maven-3') {
-                    script {
-                        if(isUnix() == true) {
-                            sh 'mvn clean package --file app/pom.xml'
-                        }
-                        else {
-                            bat 'mvn clean package --file app/pom.xml'
-                        }
-                    }
-                }
+                echo 'Veracode scanning'
+                withCredentials([ usernamePassword ( 
+                    credentialsId: 'veracode_login', usernameVariable: 'VERACODE_API_ID', passwordVariable: 'VERACODE_API_KEY') ]) {
+                        // fire-and-forget 
+                        veracode applicationName: "${VERACODE_APP_NAME}", uploadIncludesPattern: "app/target/verademo.war", scanName: "${BUILD_TAG}-${env.HOST_OS}", vid: "${VERACODE_API_ID}", vkey: "${VERACODE_API_KEY}"
+
+                        // wait for scan to complete (timeout: x)
+                        //veracode applicationName: '${VERACODE_APP_NAME}'', criticality: 'VeryHigh', debug: true, timeout: 20, fileNamePattern: '', pHost: '', pPassword: '', pUser: '', replacementPattern: '', sandboxName: '', scanExcludesPattern: '', scanIncludesPattern: '', scanName: "${BUILD_TAG}", uploadExcludesPattern: '', uploadIncludesPattern: 'target/verademo.war', vid: '${VERACODE_API_ID}', vkey: '${VERACODE_API_KEY}'
+                    }      
             }
         }
+
         stage ('Veracode SCA') {
             steps {
                 echo 'Veracode SCA'
                 withCredentials([ string(credentialsId: 'SCA_Token', variable: 'SRCCLR_API_TOKEN')]) {
                     withMaven(maven:'maven-3') {
                         script {
-                            dir('app') {
-                                sh '''
-                                    curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan --update-advisor --allow-dirty
-                                '''
-                               }
-                        }                
-                    }                
-                }            
+                            sh '''
+                                curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan ./app --update-advisor --allow-dirty
+                            '''
+                            }
+                        }
+                    }
+                }
             }
         }
         stage ('Veracode pipeline scan') {
@@ -96,4 +96,5 @@ pipeline {
             }
         }
     }
+}
 }
