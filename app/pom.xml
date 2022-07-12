@@ -154,7 +154,7 @@
                <!-- Log all output to veracode.log file -->
                <record name="veracode_${current.time}.log" loglevel="verbose" append="false" />
                <!-- Call the Veracode wrapper to upload and scan -->
-               <java jar="/Users/jmok/VeracodeJavaAPI.jar" fork="true">
+               <java jar="~/VeracodeJavaAPI.jar" fork="true">
                   <arg line=" -action ${veracode.action} -vid ${veracode.vid} -vkey ${veracode.vkey} -criticality ${veracode.criticality} 
                   -createprofile ${veracode.createprofile} -version ${current.time} -appname ${veracode.appname} -filepath ${veracode.filepath}" />
                </java>
@@ -166,36 +166,7 @@
       </execution>
    </executions>
 </plugin>        
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<debug>true</debug>
-					<debuglevel>lines,vars,source</debuglevel>
-				</configuration>
-			</plugin>
-			 <plugin>
-        		    <groupId>com.srcclr</groupId>
-            		    <artifactId>srcclr-maven-plugin</artifactId>
-            		    <version>3.1.21</version>
-            <configuration>
-                <!--- Add configuration details here-->
-                
-		<apiToken>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjcyNTgzLCJleHAiOjE2NTI5ODI0MTUsImF1dGhvcml0aWVzIjoiQUdFTlQiLCJqdGkiOiIxYjY0YTAzYi02YTYyLTRjOWMtYjJlMi1iYTIyNzRlNDIwMzQiLCJjbGllbnRfaWQiOiIiLCJzY29wZSI6W119.NDA0QLGniUrSqcj5NeihbE2sR--OLSKLoArWoioYoDVxk1ZSu13sYwDEHW6nJm1An3Ea4e-6bxGIzNaBZoIAmrDtfQ9yv7Lc9_ds3O_zYN7rkqteZB2MdMQcNJkJNzsqQdXX8npbs5dsTFp60crTYHQ3oK46dWj6-Em9lFkVxpY</apiToken>
-	           </configuration>
-        	   <executions>
-              		 <execution>
-                   <id>srcclr-scan</id>
-                   <phase>verify</phase>
-                   <goals>
-                       <goal>scan</goal>
-                   </goals>
-               </execution>
-          </executions>
-        </plugin>
+			
 		</plugins>
 	</build>
 </project>
