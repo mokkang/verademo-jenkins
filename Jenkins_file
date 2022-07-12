@@ -59,7 +59,7 @@ pipeline {
                     withMaven(maven:'maven-3') {
                         script {
                             if(isUnix() == true) {
-                                sh "curl -sSL https://download.sourceclear.com/ci.sh | sh "
+                                sh "curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan ./app --update-advisor --allow-dirty --recursive"
 
                                 // debug, no upload
                                 //sh "curl -sSL https://download.sourceclear.com/ci.sh | DEBUG=1 sh -s -- scan --no-upload"
@@ -69,7 +69,7 @@ pipeline {
                                             Set-ExecutionPolicy AllSigned -Scope Process -Force
                                             $ProgressPreference = "silentlyContinue"
                                             iex ((New-Object System.Net.WebClient).DownloadString('https://download.srcclr.com/ci.ps1'))
-                                            srcclr scan . --allow-dirty --update-advisor
+                                            srcclr scan ./app --allow-dirty --update-advisor --recursive
                                             '''
                             }
                         }
@@ -77,22 +77,6 @@ pipeline {
                 }
             }
         }
-/*
-        // only works on *nix, as we're building a Linux image
-        //  uses the natively installed docker
-        stage ('Deploy') {
-            when { expression { return (isUnix() == true) } }
-            steps {
-                echo 'building Docker image'
-                sh 'docker version'
-
-                ansiColor('xterm') {
-                    sh 'docker build -t verademo:${BUILD_TAG} .'
-                }
-                
-                // split into separate stage??
-                echo 'Deploying ...'
-*/        
             }
         }
     
