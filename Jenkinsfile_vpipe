@@ -12,7 +12,7 @@ pipeline {
             echo "package"
             sh (script: """
                 mvn -f app/pom.xml package
-                pwd
+                
             """)  
             }
       }
