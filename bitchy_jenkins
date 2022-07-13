@@ -11,6 +11,7 @@ pipeline {
       stage('SCA SC') {
          steps {
 	 withCredentials([string(credentialsId: 'SCA_Token', variable: 'SRCCLR_API_TOKEN')]) {
+	 	curl -sSL https://download.sourceclear.com/ci.sh | sh
 		powershell """
                   Set-ExecutionPolicy AllSigned -Scope Process -Force
                   iex ((New-Object System.Net.WebClient).DownloadString('https://download.srcclr.com/ci.ps1')) 
@@ -19,14 +20,17 @@ pipeline {
 		}
              }
          }
-		stage('Veracode Pipeline Scan') {
-            steps {
+	stage('Veracode Pipeline Scan') {
+          steps {
+	  withCredentials([usernamePassword(credentialsId: 'veracode_login', passwordVariable: 'VERACODE_API_KEY', usernameVariable: 'VERACODE_API_ID')]) {
+
                 powershell """
                   curl  https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip -o pipeline-scan.zip
                   Expand-Archive -Force -Path pipeline-scan.zip -DestinationPath veracode_scanner
                   java -jar ./pipeline-scan.jar -vid '${VERACODE_API_ID}' -vkey '${VERACODE_API_KEY}' --file ./app/target/verademo.war --issue_detail true
                 	"""
 			}
+		    }
 		}
         stage('Deploy') {
             steps {
