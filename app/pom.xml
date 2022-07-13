@@ -136,37 +136,5 @@
 
 	<build>
 		<finalName>verademo</finalName>
-		<plugins>
-		<plugin>
-   <groupId>org.apache.maven.plugins</groupId>
-   <artifactId>maven-antrun-plugin</artifactId>
-   <version>1.7</version>
-   <executions>
-      <execution>
-         <phase>package</phase>
-         <configuration>
-            <target name="UploadAndScan" description="Turns on debug symbols, logging. Cleans, builds, uploads binaries. Starts scan">
-               <property file="veracode.properties" prefix="veracode" />
-               <!-- Create a timestamp value to use for the build id -->
-               <tstamp>
-                  <format property="current.time" pattern="yyyyMMdd-kmmssS" />
-               </tstamp>
-               <!-- Log all output to veracode.log file -->
-               <record name="veracode_${current.time}.log" loglevel="verbose" append="false" />
-               <!-- Call the Veracode wrapper to upload and scan -->
-               <java jar="~/VeracodeJavaAPI.jar" fork="true">
-                  <arg line=" -action ${veracode.action} -vid ${veracode.vid} -vkey ${veracode.vkey} -criticality ${veracode.criticality} 
-                  -createprofile ${veracode.createprofile} -version ${current.time} -appname ${veracode.appname} -filepath ${veracode.filepath}" />
-               </java>
-            </target>
-         </configuration>
-         <goals>
-            <goal>run</goal>
-         </goals>
-      </execution>
-   </executions>
-</plugin>        
-			
-		</plugins>
 	</build>
 </project>
