@@ -10,13 +10,13 @@ pipeline {
         }
       stage('SCA SC') {
          steps {
-	 withCredentials([string(credentialsId: 'SRCCLR_API_TOKEN', variable: 'SRCCLR_API_TOKEN')]) {
-}
+	 withCredentials([string(credentialsId: 'SCA_Token', variable: 'SRCCLR_API_TOKEN')]) {
 		powershell """
                   Set-ExecutionPolicy AllSigned -Scope Process -Force
                   iex ((New-Object System.Net.WebClient).DownloadString('https://download.srcclr.com/ci.ps1')) 
                   srcclr scan ./app --update-advisor --allow-dirty
 		        """
+		}
              }
          }
 		stage('Veracode Pipeline Scan') {
