@@ -50,8 +50,7 @@ pipeline {
         stage ('Veracode pipeline scan') {
             steps {
                 echo 'Veracode Pipeline scanning'
-                withCredentials([ usernamePassword ( 
-                    credentialsId: 'veracode_login', usernameVariable: 'VERACODE_API_ID', passwordVariable: 'VERACODE_API_KEY') ]) {
+            withCredentials([usernamePassword(credentialsId: 'Veracode_API-Credentials', passwordVariable: 'VERACODE_API_KEY', usernameVariable: 'VERACODE_API_ID')]) {
                         script {
                             try {
                                 if(isUnix() == true) {
@@ -65,7 +64,7 @@ pipeline {
                                     powershell """
                                             curl  https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip -o pipeline-scan.zip
                                             Expand-Archive -Force -Path pipeline-scan.zip -DestinationPath veracode_scanner   
-                                            java -jar pipeline-scan.jar --veracode_api_id $VERACODE_API_ID --veracode_api_key $VERACODE_API_KEY --file target/verademo.war --issue_details true --verbose true
+                                            java -jar pipeline-scan.jar --veracode_api_id '${VCID}' --veracode_api_key $VERACODE_API_KEY --file target/verademo.war --issue_details true --verbose true
                                             """
                                 }
                             } catch (err) {
