@@ -10,10 +10,7 @@ pipeline {
       stage('Package') {
          steps {
             echo "package"
-            sh (script: """
-                mvn -f app/pom.xml package
-                
-            """)  
+            sh 'mvn clean package --file ./app/pom.xml'  
             }
       }
       stage ('Veracode pipeline scan') {
