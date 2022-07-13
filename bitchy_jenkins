@@ -15,7 +15,7 @@ pipeline {
 		powershell """
                   Set-ExecutionPolicy AllSigned -Scope Process -Force
                   iex ((New-Object System.Net.WebClient).DownloadString('https://download.srcclr.com/ci.ps1')) 
-                  srcclr scan  . --update-advisor --allow-dirty
+                  srcclr scan ./app --update-advisor --allow-dirty
 		        """
              }
          }
@@ -24,7 +24,7 @@ pipeline {
                 powershell """
                   curl  https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip -o pipeline-scan.zip
                   Expand-Archive -Force -Path pipeline-scan.zip -DestinationPath veracode_scanner
-                  java -jar ./pipeline-scan.jar -vid '${VERACODE_API_ID}' -vkey '${VERACODE_API_KEY}' --file app/target/verademo.war
+                  java -jar ./pipeline-scan.jar -vid '${VERACODE_API_ID}' -vkey '${VERACODE_API_KEY}' --file ./app/target/verademo.war --issue_detail true
                 	"""
 			}
 		}
