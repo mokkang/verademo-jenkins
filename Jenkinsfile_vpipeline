@@ -50,7 +50,7 @@ pipeline {
         stage ('Veracode pipeline scan') {
             steps {
                 echo 'Veracode Pipeline scanning'
-            withCredentials([usernamePassword(credentialsId: 'Veracode_API-Credentials', passwordVariable: 'VERACODE_API_KEY', usernameVariable: 'VERACODE_API_ID')]) {
+            withCredentials([usernamePassword(credentialsId: 'veracode_login', passwordVariable: 'VERACODE_API_KEY', usernameVariable: 'VERACODE_API_ID')]) {
                         script {
                             try {
                                 if(isUnix() == true) {
