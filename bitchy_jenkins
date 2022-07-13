@@ -34,7 +34,6 @@ pipeline {
             archiveArtifacts artifacts: 'baseline.json'
          }
       }
-   }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
