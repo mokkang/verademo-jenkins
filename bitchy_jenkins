@@ -8,12 +8,13 @@ pipeline {
                 powershell 'mvn clean package --file app/pom.xml'
             }
         }
-      stage('SCA SC') {
+      stage('Veracode SCA') {
          steps {
 	 withCredentials([string(credentialsId: 'SCA_Token', variable: 'SRCCLR_API_TOKEN')]) {
 	     sh '''
 	 	curl -sSL https://download.sourceclear.com/ci.sh | sh
 	     '''
+	     }
 		powershell """
                   Set-ExecutionPolicy AllSigned -Scope Process -Force
                   iex ((New-Object System.Net.WebClient).DownloadString('https://download.srcclr.com/ci.ps1')) 
@@ -21,10 +22,9 @@ pipeline {
 		        """
 		}
              }
-         }
-	stage('Veracode Pipeline Scan') {
-        steps {
-            withCredentials([usernamePassword(credentialsId: 'veracode_login', passwordVariable: 'VERACODE_API_KEY', usernameVariable: 'VERACODE_API_ID')]) {
+      stage('Veracode Pipeline Scan') {
+         steps {
+         withCredentials([usernamePassword(credentialsId: 'veracode_login', passwordVariable: 'VERACODE_API_KEY', usernameVariable: 'VERACODE_API_ID')]) {
                sh '''
                   curl -s -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
                   unzip -o pipeline-scan-LATEST.zip
@@ -39,7 +39,6 @@ pipeline {
                 echo 'Deploying....'
             }
         }
-    }
 	post {
 	    always {
 	      archiveArtifacts artifacts: 'results.json', fingerprint: true
